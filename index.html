@@ -113,65 +113,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function isInMiniBrowser() {
         const ua = navigator.userAgent.toLowerCase();
         return (
-            ua.includes("wv") || // Android WebView
-            ua.includes("fb") || // Facebook in-app browser
-            ua.includes("instagram") || // Instagram in-app browser
-            ua.includes("twitter") || // Twitter in-app browser
-            ua.includes("snapchat") || // Snapchat in-app browser
-            ua.includes("line") || // LINE app browser
-            ua.includes("wechat") || // WeChat browser
-            ua.includes("tiktok") || // TikTok browser
-            ua.includes("baidu") || // Baidu browser
-            ua.includes("puffin") || // Puffin browser
-            ua.includes("ucbrowser") || // UC Browser
-            ua.includes("miuibrowser") // MIUI Browser
+            ua.includes("wv") ||       // WebView
+            ua.includes("fb") ||       // Facebook
+            ua.includes("instagram") || // Instagram
+            ua.includes("twitter") ||  // Twitter
+            ua.includes("snapchat") || // Snapchat
+            ua.includes("wechat") ||   // WeChat
+            ua.includes("tiktok")      // TikTok
         );
     }
 
     function openInBrowser() {
         const url = window.location.href;
-        const ua = navigator.userAgent.toLowerCase();
 
-        // Preferred browsers
-        let chromePackage = "com.android.chrome";
-        let firefoxPackage = "org.mozilla.firefox";
-        let samsungPackage = "com.sec.android.app.sbrowser";
-        let edgePackage = "com.microsoft.emmx";
-
-        // Android: Try to open in different browsers
-        if (ua.includes("android")) {
-            window.location = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=${chromePackage};end;`;
-            setTimeout(() => {
-                window.location = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=${firefoxPackage};end;`;
-            }, 1000);
-            setTimeout(() => {
-                window.location = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=${samsungPackage};end;`;
-            }, 2000);
-            setTimeout(() => {
-                window.location = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=${edgePackage};end;`;
-            }, 3000);
-        }
-        // iOS: Open Safari using a hidden <a> tag
-        else if (ua.includes("iphone") || ua.includes("ipad") || ua.includes("ipod")) {
-            const a = document.createElement("a");
-            a.href = url;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-        // Windows / macOS: Open a new browser tab
-        else {
-            window.open(url, "_blank");
-        }
+        // Open in Safari (iOS) or Default Browser (Android)
+        window.open(url, "_blank");
     }
 
     if (isInMiniBrowser()) {
         setTimeout(() => {
             Swal.fire({
                 title: "Open in Browser",
-                text: "For the best experience, please open this page in Chrome, Firefox, Safari, Edge, or Samsung Internet.",
+                text: "For a better experience, please open this page in Chrome, Safari, or another browser.",
                 icon: "info",
                 confirmButtonText: "Open in Browser",
                 allowOutsideClick: false
@@ -181,15 +144,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Fallback Button if auto-redirection fails
+            // Fallback Button in case SweetAlert fails
             document.body.innerHTML += `
                 <div style="text-align:center; margin-top:20px;">
                     <button onclick="openInBrowser()" style="background:#007bff; color:white; padding:10px 20px; border:none; border-radius:5px; font-size:16px;">
-                        Open in Chrome / Firefox / Safari
+                        Open in Browser
                     </button>
                 </div>
             `;
-        }, 500); // Small delay to ensure SweetAlert is fully loaded
+        }, 500);
     }
 });
 </script>
