@@ -107,6 +107,36 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+	  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    function isInMiniBrowser() {
+        const ua = navigator.userAgent.toLowerCase();
+        return (
+            ua.includes("wv") || // WebView (Android)
+            ua.includes("fb") || // Facebook in-app browser
+            ua.includes("instagram") || // Instagram in-app browser
+            ua.includes("twitter") || // Twitter in-app browser
+            ua.includes("snapchat") || // Snapchat in-app browser
+            ua.includes("line") || // LINE app browser
+            ua.includes("wechat") // WeChat browser
+        );
+    }
+
+    if (isInMiniBrowser()) {
+        Swal.fire({
+            title: "Open in Browser",
+            text: "For best experience, please open this page in Chrome or Safari.",
+            icon: "info",
+            confirmButtonText: "Open in Browser",
+            allowOutsideClick: false
+        }).then(() => {
+            window.location.href = window.location.href; // Try to reload in full browser
+        });
+    }
+});
+</script>
+
   </head>
   <body class="" style="">
     <!-- <h2 class="text-center" style="color: #000000; font-size: 24px;">KEITH PISOWIFI - ONLINE STORE</h2> -->
