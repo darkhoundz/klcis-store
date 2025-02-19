@@ -128,41 +128,37 @@ document.addEventListener("DOMContentLoaded", function () {
         const url = window.location.href;
 
         if (navigator.userAgent.match(/(iPhone|iPad|iPod)/i)) {
-            // Try to open in Chrome on iOS
             window.location = `googlechrome://${url.replace(/^https?:\/\//, "")}`;
             setTimeout(() => {
                 window.location = url; // If Chrome isn't installed, fallback to Safari
             }, 500);
         } else {
-            // Open in Chrome or default browser on Android
-            window.open(url, "_blank");
+            window.location.href = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end;`;
         }
     }
 
     if (isInMiniBrowser()) {
-        setTimeout(() => {
-            Swal.fire({
-                title: "Open in Browser",
-                text: "For the best experience, open this page in Chrome or Safari.",
-                icon: "info",
-                confirmButtonText: "Open in Browser",
-                allowOutsideClick: false
-            }).then(() => {
-                openInBrowser();
-            });
+        // Show popup immediately
+        Swal.fire({
+            title: "Open in Browser",
+            text: "For best experience, please open this page in Chrome or Safari.",
+            icon: "info",
+            confirmButtonText: "Open in Browser",
+            allowOutsideClick: false
+        }).then(() => {
+            openInBrowser();
+        });
 
-            // Ensure the fallback button is visible
-            document.body.innerHTML += `
-                <div style="text-align:center; margin-top:20px;">
-                    <button onclick="openInBrowser()" style="background:#007bff; color:white; padding:10px 20px; border:none; border-radius:5px; font-size:16px;">
-                        Open in Browser
-                    </button>
-                </div>
-            `;
-        }, 1000); // Delay to ensure execution
+        // Fallback Button
+        let button = document.createElement("button");
+        button.innerText = "Open in Browser";
+        button.style = "display:block; margin:20px auto; padding:10px 20px; background:#007bff; color:white; font-size:16px; border:none; border-radius:5px; cursor:pointer;";
+        button.onclick = openInBrowser;
+        document.body.appendChild(button);
     }
 });
 </script>
+
 
 	  
   </head>
